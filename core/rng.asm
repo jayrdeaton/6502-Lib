@@ -1,5 +1,5 @@
 ; =============================================================================
-;   rng.asm — shared 8-bit Galois LFSR pseudo-random generator
+;   rng.asm - shared 8-bit Galois LFSR pseudo-random generator
 ; =============================================================================
 ; Caller contract:
 ; - RNG_STATE must be defined by the consuming project.
@@ -20,7 +20,7 @@
 .segment "CART"
 
 ; -----------------------------------------------------------------------------
-; AdvanceRng — step LFSR one bit (maximal-length, period 255)
+; AdvanceRng - step LFSR one bit (maximal-length, period 255)
 ; -----------------------------------------------------------------------------
 AdvanceRng:
   lda RNG_STATE
@@ -32,7 +32,7 @@ AdvanceRng:
   rts
 
 ; -----------------------------------------------------------------------------
-; RollInRange — bounded roll
+; RollInRange - bounded roll
 ; In:  A = range size N (1..255)
 ; Out: A in [0, N-1]
 ; -----------------------------------------------------------------------------

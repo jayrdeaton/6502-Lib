@@ -1,5 +1,5 @@
 ; =============================================================================
-;   vdp.inc — interface contract for shared VDP primitives
+;   vdp.inc - interface contract for shared VDP primitives
 ; =============================================================================
 ;
 ; Required caller symbols:

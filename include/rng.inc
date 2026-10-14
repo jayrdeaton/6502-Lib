@@ -1,5 +1,5 @@
 ; =============================================================================
-;   rng.inc — interface contract for shared RNG routines
+;   rng.inc - interface contract for shared RNG routines
 ; =============================================================================
 ;
 ; Required caller symbols:

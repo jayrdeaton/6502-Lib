@@ -1,16 +1,16 @@
 ; =============================================================================
-;   input.asm — shared joystick-first, keyboard-fallback input primitives
+;   input.asm - shared joystick-first, keyboard-fallback input primitives
 ; =============================================================================
 ; Caller contract:
 ; - Consuming project defines HW_PRESENT, HW_GPIO, ReadJoystick1,
 ;   ReadJoystick2, Chrin (all Kernal-provided) before including this file.
 ; - Consuming project defines its own DIR_UP/DIR_DOWN constants (and
 ;   DIR_LEFT/DIR_RIGHT, only if it's a 4-directional game) at whatever
-;   numeric values it already uses — this file references them by name
+;   numeric values it already uses - this file references them by name
 ;   only, so Snake/LightCycles' 0/1/2/3 and Pong's 1/2 both work unchanged.
 ; - Consuming project defines the zero-page output bytes each routine
 ;   below documents (JOY_STATE, JOY_STATE2, KB_DIR, KB_DIR_P1, KB_DIR_P2,
-;   KB_FIRE, and — only if calling DrainKeyboardSplit — KB_FIRE_P1,
+;   KB_FIRE, and - only if calling DrainKeyboardSplit - KB_FIRE_P1,
 ;   KB_FIRE_P2) before including this file, at whatever address is free.
 ;
 ; Exported routines:
@@ -19,7 +19,7 @@
 ; - DrainKeyboardCombined  single-player keyboard fallback (WASD or arrows)
 ; - DrainKeyboardSplit     two-player keyboard fallback (WASD=P1, arrows=P2)
 ;
-; This file intentionally does NOT resolve a final NEXT_DIR/START_PRESSED —
+; This file intentionally does NOT resolve a final NEXT_DIR/START_PRESSED -
 ; that composition (joystick-first priority, A-button-or-space, edge
 ; detection) is project-specific glue that stays in each game's own
 ; input.asm, since the exact target variables differ per game (NEXT_DIR vs
@@ -65,7 +65,7 @@ KB_DIR_NONE = $FF          ; sentinel: no direction seen in this drain
 .segment "CART"
 
 ; -----------------------------------------------------------------------------
-; PollJoyCombined — read both joystick ports and AND-combine them
+; PollJoyCombined - read both joystick ports and AND-combine them
 ; (active-low AND = logical OR of "pressed"), so either port drives a
 ; single-player game regardless of which one it's plugged into.
 ; Out: JOY_STATE = combined active-low byte, or $FF (idle) if no GPIO card.
@@ -87,8 +87,8 @@ PollJoyCombined:
   rts
 
 ; -----------------------------------------------------------------------------
-; PollJoy1 / PollJoy2 — read a single joystick port, gated on HW_GPIO
-; (ReadJoystick1/2 do not check hardware presence themselves — a floating
+; PollJoy1 / PollJoy2 - read a single joystick port, gated on HW_GPIO
+; (ReadJoystick1/2 do not check hardware presence themselves - a floating
 ; bus reads as meaningless data with no GPIO card fitted).
 ; Out: JOY_STATE / JOY_STATE2, or $FF (idle) if no GPIO card.
 ; Clobbers: A
@@ -118,7 +118,7 @@ PollJoy2:
   rts
 
 ; -----------------------------------------------------------------------------
-; DrainKeyboardCombined — single-player keyboard fallback: WASD or arrow
+; DrainKeyboardCombined - single-player keyboard fallback: WASD or arrow
 ; keys both work, whichever was pressed most recently in this call wins.
 ; Drains every pending Chrin character each call (not just one), so a
 ; burst typed between polls doesn't leave stale characters for next time.
@@ -195,7 +195,7 @@ DrainKeyboardCombined:
   rts
 
 ; -----------------------------------------------------------------------------
-; DrainKeyboardSplit — two-player keyboard fallback: WASD drives P1 only,
+; DrainKeyboardSplit - two-player keyboard fallback: WASD drives P1 only,
 ; arrow keys drive P2 only, so one player's keypresses can never move the
 ; other's paddle/cycle. Drains every pending Chrin character ONCE per
 ; call, checking both keysets in the same pass (so both players' presses
@@ -204,7 +204,7 @@ DrainKeyboardCombined:
 ; that never defines DIR_LEFT/DIR_RIGHT (e.g. Pong).
 ; Out: KB_DIR_P1 = last WASD direction seen this call, or KB_DIR_NONE.
 ;      KB_DIR_P2 = last arrow-key direction seen this call, or KB_DIR_NONE.
-;      KB_FIRE = 1 if EITHER fire key was seen this call, else 0 — kept
+;      KB_FIRE = 1 if EITHER fire key was seen this call, else 0 - kept
 ;      for callers with only one shared fire/start/pause action (every
 ;      game as of this writing: "did anyone press it" is all that
 ;      matters, mirroring how either joystick's A button already

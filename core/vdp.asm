@@ -1,5 +1,5 @@
 ; =============================================================================
-;   vdp.asm — shared TMS9918 Graphics I primitives
+;   vdp.asm - shared TMS9918 Graphics I primitives
 ; =============================================================================
 ; Caller contract:
 ; - Consuming project defines VC_REG, VC_DATA, OCCUPANCY, OFFSET_LO, OFFSET_HI,

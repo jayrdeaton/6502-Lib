@@ -3,19 +3,19 @@ Main file   : examples/rng_harness.asm
 Current file: examples/rng_harness.asm
 
 000000r 1               ; =============================================================================
-000000r 1               ;   rng_harness.asm — minimal harness for shared RNG module
+000000r 1               ;   rng_harness.asm - minimal harness for shared RNG module
 000000r 1               ; =============================================================================
 000000r 1               
 000000r 1               .setcpu "65C02"
 000000r 1               
 000000r 1               .include "../6502.inc"
 000000r 2               ; =============================================================================
-000000r 2               ;   6502.inc — External include file for the 6502 system
+000000r 2               ;   6502.inc - External include file for the 6502 system
 000000r 2               ; =============================================================================
 000000r 2               ;
 000000r 2               ;   CPU:       WDC 65C02S
 000000r 2               ;   BIOS:      v1.5
-000000r 2               ;   Assembler: ca65 (cc65 toolchain) — uses := for absolute symbols
+000000r 2               ;   Assembler: ca65 (cc65 toolchain) - uses := for absolute symbols
 000000r 2               ;
 000000r 2               ;   Include this file in external projects to access Kernal routines,
 000000r 2               ;   IO hardware registers, system variables, and useful constants.
@@ -35,13 +35,13 @@ Current file: examples/rng_harness.asm
 000000r 2               ;                 because Wozmon builds its input buffer there)
 000000r 2               ;   $0500-$05FF   BAS_TOKBUF: BASIC's tokenizing scratch
 000000r 2               ;   $0600-$07FF   FS sector buffer (clobbered by any FS/St routine call)
-000000r 2               ;   $0800-$7FFF   Program RAM (30 KB — load address for user code)
+000000r 2               ;   $0800-$7FFF   Program RAM (30 KB - load address for user code)
 000000r 2               ;   $8000-$83FF   IO 1: Banked RAM Low  (256 × ~1 KB banks)
 000000r 2               ;   $8400-$87FF   IO 2: Banked RAM High (256 × ~1 KB banks)
 000000r 2               ;   $8800-$881F   IO 3: RTC (DS1511Y)
 000000r 2               ;   $8C00-$8C07   IO 4: Storage (CompactFlash, 8-bit IDE)
 000000r 2               ;   $9000-$9003   IO 5: Serial (R65C51 ACIA)
-000000r 2               ;   $9400-$940F   IO 6: GPIO (65C22 VIA — keyboard & joysticks)
+000000r 2               ;   $9400-$940F   IO 6: GPIO (65C22 VIA - keyboard & joysticks)
 000000r 2               ;   $9800-$981C   IO 7: Sound (SID / ARMSID)
 000000r 2               ;   $9C00-$9C01   IO 8: Video (TMS9918 / pico9918)
 000000r 2               ;   $A000-$A0FF   Kernal Jump Table (stable entry points)
@@ -56,14 +56,14 @@ Current file: examples/rng_harness.asm
 000000r 2               ;   -------------
 000000r 2               ;   On RESET the BIOS probes all eight IO slots, initializes detected
 000000r 2               ;   hardware, and auto-selects video or serial console.  If neither is
-000000r 2               ;   found, IO_MODE is left unchanged (no halt — cartridges with their
+000000r 2               ;   found, IO_MODE is left unchanged (no halt - cartridges with their
 000000r 2               ;   own display hardware can still boot).  A startup beep plays (if SID
 000000r 2               ;   is present) for audible feedback, then BOOT_VECTOR ($035B) is
-000000r 2               ;   checked — if non-zero, execution jumps there (cartridge takeover).
+000000r 2               ;   checked - if non-zero, execution jumps there (cartridge takeover).
 000000r 2               ;   Otherwise a console check halts if no video/serial is found, then
 000000r 2               ;   the splash screen and boot menu are displayed.  ENTER launches
 000000r 2               ;   BASIC; ESC enters the Monitor.  A 5-second timeout auto-boots BASIC.
-000000r 2               ;   The splash is drawn on whichever console is active — centred on the
+000000r 2               ;   The splash is drawn on whichever console is active - centred on the
 000000r 2               ;   40-column screen, or left-aligned as plain text over serial.
 000000r 2               ;
 000000r 2               ;   GRACEFUL DEGRADATION
@@ -79,7 +79,7 @@ Current file: examples/rng_harness.asm
 000000r 2               ;   Cartridges overlay $C000-$FFFF (BASIC, Monitor, Wozmon, vectors).
 000000r 2               ;   The Kernal ($A000-$B7FF) and character set ($B800-$BFFF) remain
 000000r 2               ;   accessible.  Use KernalInit ($A078) to initialize all hardware and
-000000r 2               ;   return via RTS — interrupts are left disabled so the cart can set
+000000r 2               ;   return via RTS - interrupts are left disabled so the cart can set
 000000r 2               ;   up its own handlers first.  See usage patterns in the BIOS README.
 000000r 2               ;
 000000r 2               ;   IO_MODE
@@ -115,10 +115,10 @@ Current file: examples/rng_harness.asm
 000000r 2               ; use STR_PTR and CF_BUF_PTR/CF_LBA as parameters to Kernal calls.
 000000r 2               ; Locations $3A-$FF are free for user programs.
 000000r 2               
-000000r 2               STR_PTR             := $02               ; 2 bytes — String pointer (used by FsLoadFile, FsSaveFile, FsDeleteFile, etc.)
-000000r 2               CF_BUF_PTR          := $24               ; 2 bytes — CF sector data buffer pointer
-000000r 2               CF_LBA              := $26               ; 4 bytes — CF 28-bit LBA address (little-endian)
-000000r 2               XFER_PTR            := $2A               ; 2 bytes — XModem transfer data pointer (source for XModemSave, dest for XModemLoad)
+000000r 2               STR_PTR             := $02               ; 2 bytes - String pointer (used by FsLoadFile, FsSaveFile, FsDeleteFile, etc.)
+000000r 2               CF_BUF_PTR          := $24               ; 2 bytes - CF sector data buffer pointer
+000000r 2               CF_LBA              := $26               ; 4 bytes - CF 28-bit LBA address (little-endian)
+000000r 2               XFER_PTR            := $2A               ; 2 bytes - XModem transfer data pointer (source for XModemSave, dest for XModemLoad)
 000000r 2               
 000000r 2               ; Safe zero page range for user programs:
 000000r 2               ; $3A-$FF (198 bytes free)
@@ -130,16 +130,16 @@ Current file: examples/rng_harness.asm
 000000r 2               ;   SECTION 2: SYSTEM VARIABLES ($0300-$03FF)
 000000r 2               ; =============================================================================
 000000r 2               
-000000r 2               IRQ_PTR             := $0300             ; 2 bytes — IRQ handler vector (writable; default: internal Irq handler)
-000000r 2               BRK_PTR             := $0302             ; 2 bytes — BRK handler vector (writable; default: enters Monitor)
-000000r 2               NMI_PTR             := $0304             ; 2 bytes — NMI handler vector (writable; default: RTI)
+000000r 2               IRQ_PTR             := $0300             ; 2 bytes - IRQ handler vector (writable; default: internal Irq handler)
+000000r 2               BRK_PTR             := $0302             ; 2 bytes - BRK handler vector (writable; default: enters Monitor)
+000000r 2               NMI_PTR             := $0304             ; 2 bytes - NMI handler vector (writable; default: RTI)
 000000r 2               
-000000r 2               IO_MODE             := $0306             ; 1 byte  — Console output mode (bit 0: 0=video, 1=serial)
-000000r 2               VID_CURSOR_X        := $0307             ; 1 byte  — Video cursor column (0-39)
-000000r 2               VID_CURSOR_Y        := $0308             ; 1 byte  — Video cursor row (0-23)
+000000r 2               IO_MODE             := $0306             ; 1 byte  - Console output mode (bit 0: 0=video, 1=serial)
+000000r 2               VID_CURSOR_X        := $0307             ; 1 byte  - Video cursor column (0-39)
+000000r 2               VID_CURSOR_Y        := $0308             ; 1 byte  - Video cursor row (0-23)
 000000r 2               
-000000r 2               HW_PRESENT          := $030D             ; 1 byte  — Hardware present bitmask (set during boot probe)
-000000r 2               CF_DISK             := $030F             ; 1 byte  — Current CF disk bank (0–255); base LBA = CF_DISK × FS_DISK_SECTORS; reset to 0 on boot
+000000r 2               HW_PRESENT          := $030D             ; 1 byte  - Hardware present bitmask (set during boot probe)
+000000r 2               CF_DISK             := $030F             ; 1 byte  - Current CF disk bank (0-255); base LBA = CF_DISK × FS_DISK_SECTORS; reset to 0 on boot
 000000r 2               
 000000r 2               ; HW_PRESENT bit definitions (bit order matches IO slot numbers):
 000000r 2               HW_RAM_L            = %00000001          ; Bit 0: RAM card low  (IO 1, $8000-$83FF)
@@ -147,7 +147,7 @@ Current file: examples/rng_harness.asm
 000000r 2               HW_RTC              = %00000100          ; Bit 2: RTC card      (IO 3, DS1511Y)
 000000r 2               HW_CF               = %00001000          ; Bit 3: Storage card   (IO 4, CompactFlash)
 000000r 2               HW_SC               = %00010000          ; Bit 4: Serial card    (IO 5, R65C51)
-000000r 2               HW_GPIO             = %00100000          ; Bit 5: GPIO card      (IO 6, 65C22 VIA — keyboard/joysticks)
+000000r 2               HW_GPIO             = %00100000          ; Bit 5: GPIO card      (IO 6, 65C22 VIA - keyboard/joysticks)
 000000r 2               HW_SID              = %01000000          ; Bit 6: Sound card     (IO 7, SID/ARMSID)
 000000r 2               HW_VID              = %10000000          ; Bit 7: Video card     (IO 8, TMS9918/pico9918)
 000000r 2               
@@ -160,21 +160,21 @@ Current file: examples/rng_harness.asm
 000000r 2               BRK_Y               := $0315             ; Saved Y register
 000000r 2               BRK_SP              := $0316             ; Saved stack pointer
 000000r 2               
-000000r 2               XFER_REMAIN         := $0317             ; 2 bytes — XModem byte count (output from XModemLoad; input to XModemSave)
-000000r 2               XFER_IO_SAVE        := $0319             ; 1 byte  — Saved IO_MODE during XModem transfer (internal use)
+000000r 2               XFER_REMAIN         := $0317             ; 2 bytes - XModem byte count (output from XModemLoad; input to XModemSave)
+000000r 2               XFER_IO_SAVE        := $0319             ; 1 byte  - Saved IO_MODE during XModem transfer (internal use)
 000000r 2               
 000000r 2               ; RTC scratch (used by RtcWriteDate to pass century):
 000000r 2               RTC_BUF_CENT        := $030B             ; Century value for RtcReadDate / RtcWriteDate
 000000r 2               
 000000r 2               ; Cartridge / boot redirect vector:
-000000r 2               BOOT_VECTOR         := $035B             ; 2 bytes — Boot redirect address (0=normal boot)
+000000r 2               BOOT_VECTOR         := $035B             ; 2 bytes - Boot redirect address (0=normal boot)
 000000r 2                                                        ;   Set after KernalInit to redirect Reset flow
 000000r 2                                                        ;   KernalInit zeroes this; write after init returns
-000000r 2               FS_IO_ADDR          := $037F             ; 2 bytes — Load/save target address for FsLoadFileAddr / FsSaveFileAddr
-000000r 2               FS_FILE_SIZE        := $034A             ; 2 bytes — File size in bytes (set by caller for FsSaveFileAddr; populated by FsLoadFileAddr)
+000000r 2               FS_IO_ADDR          := $037F             ; 2 bytes - Load/save target address for FsLoadFileAddr / FsSaveFileAddr
+000000r 2               FS_FILE_SIZE        := $034A             ; 2 bytes - File size in bytes (set by caller for FsSaveFileAddr; populated by FsLoadFileAddr)
 000000r 2               
 000000r 2               ; Program image handoff (v1.3):
-000000r 2               PRG_IMAGE_END       := $038E             ; 2 bytes — End address of a program image placed at
+000000r 2               PRG_IMAGE_END       := $038E             ; 2 bytes - End address of a program image placed at
 000000r 2                                                        ;   PROGRAM_START by a loader running outside BASIC
 000000r 2                                                        ;   (e.g. the Monitor's L command); 0 = none.
 000000r 2                                                        ;   KernalInit zeroes it; BASIC consumes and re-zeroes it
@@ -188,7 +188,7 @@ Current file: examples/rng_harness.asm
 000000r 2               ;   SECTION 3: KEY MEMORY LOCATIONS
 000000r 2               ; =============================================================================
 000000r 2               
-000000r 2               INPUT_BUFFER        := $0200             ; $0200-$02FF — 256-byte ring buffer (keyboard/serial input)
+000000r 2               INPUT_BUFFER        := $0200             ; $0200-$02FF - 256-byte ring buffer (keyboard/serial input)
 000000r 2               PROGRAM_START       := $0800             ; User programs and BASIC programs load here
 000000r 2               ;                                        ; Program space extends to $7FFF (30 KB)
 000000r 2               MEMORY_TOP          := $8000             ; First address past usable RAM (IO space starts here)
@@ -285,7 +285,7 @@ Current file: examples/rng_harness.asm
 000000r 2                                                        ;   Modifies: A
 000000r 2               
 000000r 2               SidSilence          := $A036             ; Silence all 3 SID voices (gate off only)
-000000r 2                                                        ;   Frequencies are left intact — the envelope release
+000000r 2                                                        ;   Frequencies are left intact - the envelope release
 000000r 2                                                        ;   rings the tone out.  Zeroing freq would freeze the
 000000r 2                                                        ;   waveform and decay a DC offset (audible thump)
 000000r 2                                                        ;   Skips silently if no SID is fitted
@@ -305,7 +305,7 @@ Current file: examples/rng_harness.asm
 000000r 2               ;   StReadSector / StWriteSector operate on the selected bank automatically.
 000000r 2               ;   Pass null-terminated "NAME.EXT" string via STR_PTR ($02-$03).
 000000r 2               ;   Use FsLoadFileAddr / FsSaveFileAddr for load-to-address transfers.
-000000r 2               ;   The extension is inert — nothing in the BIOS branches on it, so .PRG, .BAS
+000000r 2               ;   The extension is inert - nothing in the BIOS branches on it, so .PRG, .BAS
 000000r 2               ;   and .FOO behave identically.  What a file means is decided by the routine
 000000r 2               ;   that loads it, never by its name.
 000000r 2               ;   All FS routines use $0600-$07FF as a 512-byte sector buffer.
@@ -331,8 +331,8 @@ Current file: examples/rng_harness.asm
 000000r 2                                                        ;   Modifies: A
 000000r 2               
 000000r 2               ; --- Joysticks ---
-000000r 2               ;   Both ports are ACTIVE LOW — each line is pulled up through 1K and grounded
-000000r 2               ;   by its switch — and both routines return the port read raw.  So a held
+000000r 2               ;   Both ports are ACTIVE LOW - each line is pulled up through 1K and grounded
+000000r 2               ;   by its switch - and both routines return the port read raw.  So a held
 000000r 2               ;   button is a 0 bit and an untouched stick reads $FF:
 000000r 2               ;
 000000r 2               ;     Bit:  7   6   5   4   3   2   1   0
@@ -340,7 +340,7 @@ Current file: examples/rng_harness.asm
 000000r 2               ;
 000000r 2               ;   Test a direction with:  lda ... / and #%00010000 / beq @UpHeld
 000000r 2               ;
-000000r 2               ;   Neither routine checks HW_PRESENT — with no GPIO card fitted they read a
+000000r 2               ;   Neither routine checks HW_PRESENT - with no GPIO card fitted they read a
 000000r 2               ;   floating bus and the value is meaningless.  Test HW_GPIO first if the card
 000000r 2               ;   may be absent.  (BASIC's JOY() does this and reports $FF.)
 000000r 2               ;
@@ -443,7 +443,7 @@ Current file: examples/rng_harness.asm
 000000r 2                                                        ;   Out: A = major version, X = minor version
 000000r 2               
 000000r 2               ; --- Disk-banking & addressed storage (v1.1) ---
-000000r 2               ;   CF_DISK ($030F) selects the current disk bank (0–255).
+000000r 2               ;   CF_DISK ($030F) selects the current disk bank (0-255).
 000000r 2               ;   All FS routines, StReadSector, and StWriteSector address the selected
 000000r 2               ;   bank automatically.  Bank changes survive until the next reset.
 000000r 2               
@@ -462,15 +462,15 @@ Current file: examples/rng_harness.asm
 000000r 2               
 000000r 2               FsFormatDisk        := $A084             ; Zero the current disk's directory (erases all 16 entries)
 000000r 2                                                        ;   Out: C=0 success, C=1 write error
-000000r 2                                                        ;   No confirmation prompt — caller is responsible
+000000r 2                                                        ;   No confirmation prompt - caller is responsible
 000000r 2                                                        ;   Modifies: A, X, Y
 000000r 2               
 000000r 2               FsSetDisk           := $A087             ; Select the current CF disk bank
-000000r 2                                                        ;   In: A = disk number (0–255) → stored in CF_DISK ($030F)
+000000r 2                                                        ;   In: A = disk number (0-255) → stored in CF_DISK ($030F)
 000000r 2                                                        ;   Modifies: Flags
 000000r 2               
 000000r 2               FsGetDisk           := $A08A             ; Get the current CF disk bank
-000000r 2                                                        ;   Out: A = CF_DISK value (0–255)
+000000r 2                                                        ;   Out: A = CF_DISK value (0-255)
 000000r 2                                                        ;   Modifies: Flags, A
 000000r 2               
 000000r 2               FsPrintDisk         := $A08D             ; Print "DISK n" + CRLF via Chrout (decimal, no leading zeros)
@@ -532,8 +532,8 @@ Current file: examples/rng_harness.asm
 000000r 2               RTC_RAM_ADDR        := $8810             ; NVRAM address register
 000000r 2               RTC_RAM_DATA        := $8813             ; NVRAM data register
 000000r 2               ; Control Register B bits:
-000000r 2               RTC_CTRL_B_TE       := %10000000         ; Transfer Enable — set to inhibit clock updates during write
-000000r 2               ; Month register ($8805) — the upper 3 bits are oscillator/SQW control, not month data.
+000000r 2               RTC_CTRL_B_TE       := %10000000         ; Transfer Enable - set to inhibit clock updates during write
+000000r 2               ; Month register ($8805) - the upper 3 bits are oscillator/SQW control, not month data.
 000000r 2               ; Always mask with RTC_MON_MASK when reading the month, and preserve these bits on write.
 000000r 2               RTC_MON_MASK        := %00011111         ; Month value occupies the low 5 bits
 000000r 2               RTC_MON_EOSC        := %10000000         ; Oscillator Start/Stop (0 = oscillator running)
@@ -543,26 +543,26 @@ Current file: examples/rng_harness.asm
 000000r 2               ; --- CompactFlash / Storage (IO 4: $8C00-$8C07) ---
 000000r 2               ;   8-bit IDE (True IDE) mode.  The BIOS issues Set Features $01 at boot
 000000r 2               ;   to enable 8-bit data transfers.
-000000r 2               ST_DATA             := $8C00             ; R/W — Data register
-000000r 2               ST_ERROR            := $8C01             ; Read — Error register
-000000r 2               ST_FEATURE          := $8C01             ; Write — Feature register
-000000r 2               ST_SECT_CNT         := $8C02             ; R/W — Sector count
-000000r 2               ST_LBA_0            := $8C03             ; R/W — LBA bits 0-7
-000000r 2               ST_LBA_1            := $8C04             ; R/W — LBA bits 8-15
-000000r 2               ST_LBA_2            := $8C05             ; R/W — LBA bits 16-23
-000000r 2               ST_LBA_3            := $8C06             ; R/W — LBA bits 24-27 + drive/mode
-000000r 2               ST_STATUS           := $8C07             ; Read — Status register
-000000r 2               ST_CMD              := $8C07             ; Write — Command register
+000000r 2               ST_DATA             := $8C00             ; R/W - Data register
+000000r 2               ST_ERROR            := $8C01             ; Read - Error register
+000000r 2               ST_FEATURE          := $8C01             ; Write - Feature register
+000000r 2               ST_SECT_CNT         := $8C02             ; R/W - Sector count
+000000r 2               ST_LBA_0            := $8C03             ; R/W - LBA bits 0-7
+000000r 2               ST_LBA_1            := $8C04             ; R/W - LBA bits 8-15
+000000r 2               ST_LBA_2            := $8C05             ; R/W - LBA bits 16-23
+000000r 2               ST_LBA_3            := $8C06             ; R/W - LBA bits 24-27 + drive/mode
+000000r 2               ST_STATUS           := $8C07             ; Read - Status register
+000000r 2               ST_CMD              := $8C07             ; Write - Command register
 000000r 2               
 000000r 2               ; CF Status Register bits:
 000000r 2               ST_STATUS_ERR       := %00000001         ; Error occurred
 000000r 2               ST_STATUS_IDX       := %00000010         ; Index mark
 000000r 2               ST_STATUS_CORR      := %00000100         ; Corrected data
-000000r 2               ST_STATUS_DRQ       := %00001000         ; Data request — ready for data transfer
+000000r 2               ST_STATUS_DRQ       := %00001000         ; Data request - ready for data transfer
 000000r 2               ST_STATUS_DSC       := %00010000         ; Drive seek complete
 000000r 2               ST_STATUS_DWF       := %00100000         ; Drive write fault
 000000r 2               ST_STATUS_RDY       := %01000000         ; Drive ready
-000000r 2               ST_STATUS_BSY       := %10000000         ; Drive busy — all other bits invalid while set
+000000r 2               ST_STATUS_BSY       := %10000000         ; Drive busy - all other bits invalid while set
 000000r 2               
 000000r 2               ; CF Error Register bits:
 000000r 2               ST_ERR_AMNF         := %00000001         ; Address mark not found
@@ -602,11 +602,11 @@ Current file: examples/rng_harness.asm
 000000r 2               
 000000r 2               ; --- Serial Card (R65C51 ACIA) (IO 5: $9000-$9003) ---
 000000r 2               ;   Default config after InitSC: 8-N-1, 19200 baud, RX IRQ enabled
-000000r 2               SC_DATA             := $9000             ; R/W — Data register
-000000r 2               SC_RESET            := $9001             ; Write — Programmatic reset (write any value)
-000000r 2               SC_STATUS           := $9001             ; Read — Status register
-000000r 2               SC_CMD              := $9002             ; R/W — Command register
-000000r 2               SC_CTRL             := $9003             ; R/W — Control register
+000000r 2               SC_DATA             := $9000             ; R/W - Data register
+000000r 2               SC_RESET            := $9001             ; Write - Programmatic reset (write any value)
+000000r 2               SC_STATUS           := $9001             ; Read - Status register
+000000r 2               SC_CMD              := $9002             ; R/W - Command register
+000000r 2               SC_CTRL             := $9003             ; R/W - Control register
 000000r 2               
 000000r 2               ; Serial Status Register bits:
 000000r 2               SC_STATUS_IRQ       := %10000000         ; Interrupt occurred
@@ -754,7 +754,7 @@ Current file: examples/rng_harness.asm
 000000r 2               SID_NOTE_Bb3        = SID_NOTE_AS3
 000000r 2               SID_NOTE_B3         = $102F              ; ~247 Hz
 000000r 2               
-000000r 2               ; Octave 4 (C4=261.63 Hz .. B4=493.88 Hz) — middle octave
+000000r 2               ; Octave 4 (C4=261.63 Hz .. B4=493.88 Hz) - middle octave
 000000r 2               SID_NOTE_C4         = $1125              ; ~262 Hz (Middle C)
 000000r 2               SID_NOTE_CS4        = $122A              ; ~277 Hz
 000000r 2               SID_NOTE_Db4        = SID_NOTE_CS4
@@ -828,7 +828,7 @@ Current file: examples/rng_harness.asm
 000000r 2               SID_NOTE_A7         = $E6B0              ; ~3520 Hz
 000000r 2               SID_NOTE_AS7        = $F467              ; ~3729 Hz
 000000r 2               SID_NOTE_Bb7        = SID_NOTE_AS7
-000000r 2               ; Note: B7 (~3951 Hz = $102F0) exceeds the 16-bit SID register — not defined
+000000r 2               ; Note: B7 (~3951 Hz = $102F0) exceeds the 16-bit SID register - not defined
 000000r 2               
 000000r 2               ; --- Video Card (TMS9918 / pico9918) (IO 8: $9C00-$9C01) ---
 000000r 2               ;   Text mode: 40 columns × 24 rows.  Name table at VRAM $0000 (960 bytes).
@@ -836,9 +836,9 @@ Current file: examples/rng_harness.asm
 000000r 2               ;   To write to a VRAM address: write low byte to VC_REG, then (high | $40) to VC_REG.
 000000r 2               ;   To read from a VRAM address: write low byte to VC_REG, then high byte to VC_REG.
 000000r 2               ;   Register writes: write data byte to VC_REG, then (reg# | $80) to VC_REG.
-000000r 2               VC_DATA             := $9C00             ; R/W — VRAM data (auto-increments address)
-000000r 2               VC_REG              := $9C01             ; Write — Address/register port
-000000r 2               VC_STATUS           := $9C01             ; Read — Status register
+000000r 2               VC_DATA             := $9C00             ; R/W - VRAM data (auto-increments address)
+000000r 2               VC_REG              := $9C01             ; Write - Address/register port
+000000r 2               VC_STATUS           := $9C01             ; Read - Status register
 000000r 2               
 000000r 2               ; =============================================================================
 000000r 2               ;   SECTION 6: USEFUL CONSTANTS
@@ -893,7 +893,7 @@ Current file: examples/rng_harness.asm
 000000r 1               
 000000r 1               .include "../core/rng.asm"
 000000r 2               ; =============================================================================
-000000r 2               ;   rng.asm — shared 8-bit Galois LFSR pseudo-random generator
+000000r 2               ;   rng.asm - shared 8-bit Galois LFSR pseudo-random generator
 000000r 2               ; =============================================================================
 000000r 2               ; Caller contract:
 000000r 2               ; - RNG_STATE must be defined by the consuming project.
@@ -914,7 +914,7 @@ Current file: examples/rng_harness.asm
 000000r 2               .segment "CART"
 000000r 2               
 000000r 2               ; -----------------------------------------------------------------------------
-000000r 2               ; AdvanceRng — step LFSR one bit (maximal-length, period 255)
+000000r 2               ; AdvanceRng - step LFSR one bit (maximal-length, period 255)
 000000r 2               ; -----------------------------------------------------------------------------
 000000r 2               AdvanceRng:
 000000r 2  A5 3A          lda RNG_STATE
@@ -926,7 +926,7 @@ Current file: examples/rng_harness.asm
 000009r 2  60             rts
 00000Ar 2               
 00000Ar 2               ; -----------------------------------------------------------------------------
-00000Ar 2               ; RollInRange — bounded roll
+00000Ar 2               ; RollInRange - bounded roll
 00000Ar 2               ; In:  A = range size N (1..255)
 00000Ar 2               ; Out: A in [0, N-1]
 00000Ar 2               ; -----------------------------------------------------------------------------

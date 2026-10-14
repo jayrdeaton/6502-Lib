@@ -1,5 +1,5 @@
 ; =============================================================================
-;   rng_harness.asm — minimal harness for shared RNG module
+;   rng_harness.asm - minimal harness for shared RNG module
 ; =============================================================================
 
 .setcpu "65C02"

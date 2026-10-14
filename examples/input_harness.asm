@@ -1,5 +1,5 @@
 ; =============================================================================
-;   input_harness.asm — minimal harness for shared input module
+;   input_harness.asm - minimal harness for shared input module
 ; =============================================================================
 ;   Exercises every exported routine at least once: PollJoyCombined,
 ;   PollJoy1, PollJoy2, DrainKeyboardCombined, DrainKeyboardSplit. Defines

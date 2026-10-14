@@ -1,5 +1,5 @@
 ; =============================================================================
-;   input.inc — interface contract for shared joystick-first input polling
+;   input.inc - interface contract for shared joystick-first input polling
 ; =============================================================================
 ;
 ; Required caller symbols (defined by the consuming project before this
@@ -7,7 +7,7 @@
 ;   HW_PRESENT, HW_GPIO, ReadJoystick1, ReadJoystick2, Chrin  ; Kernal
 ;   DIR_UP, DIR_DOWN                        ; caller's own numeric values
 ;   DIR_LEFT, DIR_RIGHT                     ; omit both for a 2-directional
-;                                            ; game (e.g. Pong) — LEFT/RIGHT
+;                                            ; game (e.g. Pong) - LEFT/RIGHT
 ;                                            ; checks compile out
 ;   JOY_STATE                               ; zero page, for PollJoyCombined
 ;                                            ; and PollJoy1
@@ -19,7 +19,7 @@
 ;                                            ; (KB_FIRE_P1/P2 only needed
 ;                                            ; by a caller that wants
 ;                                            ; independent per-player fire
-;                                            ; — every game as of this
+;                                            ; - every game as of this
 ;                                            ; writing uses the combined
 ;                                            ; KB_FIRE instead)
 ;
